@@ -209,6 +209,7 @@ if [[ $CHECK_PACKAGE_SOURCES == "1" ]]; then
   nspawn /bin/bash -euo pipefail <<'PACKAGE_SOURCES' 2>&1 | tee "$WORK/logs/package-sources.log"
 export OMARCHY_PATH=/src/omarchy
 export PATH="$OMARCHY_PATH/bin:$PATH"
+bash "$OMARCHY_PATH/test/shell.d/arm-package-transaction-test.sh"
 source "$OMARCHY_PATH/install/helpers/arm-package-sources.sh"
 omarchy_arm_prepare_package_sources
 [[ $(pacman-conf --repo omarchy Usage) == "Sync" ]]
