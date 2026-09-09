@@ -2,7 +2,9 @@
 
 Apple Silicon installations use the regular Arch Linux ARM, Asahi Alarm, and Mac package repositories. The official `https://pkgs.omarchy.org/edge/$arch` repository has `Usage = Sync`, so it is refreshed but excluded from automatic package selection and upgrades.
 
-The installer, system updater, and pacman channel refresh explicitly select `omarchy/hyprland`, `omarchy/hyprtoolkit`, and `omarchy/hyprland-guiutils` alongside a full system upgrade. Aquamarine and other dependencies resolve from the regular repositories. Dependency failures stop the transaction; no packages are ignored or dependencies bypassed.
+The installer, system updater, and pacman channel refresh explicitly select `omarchy/hyprland`, `omarchy/hyprtoolkit`, and `omarchy/hyprland-guiutils` alongside a full system upgrade. Aquamarine and other dependencies resolve from the regular repositories. Dependency failures stop the transaction; dependencies are never bypassed.
+
+The installer and system updater use `--needed` to avoid reinstalling unchanged packages. Pacman removes unchanged explicit targets before considering automatic upgrades, so these transactions also pass `--ignore` for the three selected package names. This excludes them only from automatic selection in that transaction: the explicit `omarchy/` targets can still upgrade or downgrade, and all other packages upgrade normally. No persistent `IgnorePkg` setting is written.
 
 The shared policy lives in `install/helpers/arm-package-sources.sh`. Package signatures are required and the existing Omarchy signing key is imported by its full fingerprint. Repository configuration preserves other repositories and mirror choices, saving `/etc/pacman.conf.bak` when it changes.
 
